@@ -1,8 +1,27 @@
 import Image from "next/image";
 import TestSignalR from "@/app/TestSignalR";
+import {HubConnectionBuilder, IHttpConnectionOptions} from "@microsoft/signalr";
 
+const TOKEN = "your token"
+// const URL = "https://roboverse-platform-sbox.azurewebsites.net/telemetry"
+const URL = "https://roboverse-statekeeping-sbox.greenocean-0b5e85b4.westeurope.azurecontainerapps.io/hub/twin"
+
+const options: IHttpConnectionOptions =  {
+    accessTokenFactory: () => TOKEN,
+  timeout: 100000
+}
 export default function Home() {
- 
+
+  let connection = new HubConnectionBuilder()
+      .withUrl(URL, options)
+      .build();
+
+  // connection.on("send", data => {
+  //   console.log(data);
+  // });
+
+  connection.start()
+      // .then(() => connection.invoke("send", "Hello"));
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
